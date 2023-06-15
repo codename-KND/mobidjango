@@ -1,0 +1,2 @@
+# mobidjango
+ mobilance django backend
