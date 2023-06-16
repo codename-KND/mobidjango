@@ -3,6 +3,8 @@ from django.urls import path
 from django.urls import include
 from knox import views as knox_views
 from userauth.views import login_api
+from django.contrib.auth import views as auth_views
+from django.views.decorators.csrf import csrf_exempt
 
 urlpatterns = [
     path('api-auth/', include('rest_framework.urls')),
@@ -24,6 +26,12 @@ urlpatterns = [
     path('api/available_requests/<int:request_id>', views.request_detail),
     path('api/accepted_requests', views.accepted_requests),
     path('api/complete_trip', views.complete_trip),
+
+    #password reset urls
+    path('api/password_reset', csrf_exempt(auth_views.PasswordResetView.as_view(template_name='accounts/password_reset.html')), name='password_reset'),
+    path('api/password_reset/done', csrf_exempt(auth_views.PasswordResetDoneView.as_view(template_name ='accounts/password_reset_sent.html')), name='password_reset_done'),
+    path('api/reset/<uidb64>/<token>', csrf_exempt(auth_views.PasswordResetConfirmView.as_view(template_name ='accounts/password_reset_form.html')), name='password_reset_confirm'),
+    path('api/reset/done', csrf_exempt(auth_views.PasswordResetCompleteView.as_view(template_name='accounts/password_reset_complete.html')), name='password_reset_complete'),
 
 
 
