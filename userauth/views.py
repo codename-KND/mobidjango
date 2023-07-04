@@ -86,11 +86,11 @@ def user_request(request):
         user = request.user
         serializer.save(user=user, request_time=timezone.now())
 
-        distance = serializer.instance.calculate_distance()
+        #distance = serializer.instance.calculate_distance()
         response_data = {
             'request_id': serializer.instance.request_id,
             'patient': serializer.instance.patient,
-            'distance': distance
+            #'distance': distance
         }
 
         return Response(response_data)
@@ -162,7 +162,7 @@ def complete_trip(request):
         completed_trip = Completed_trip(
             request=accepted_request.request,
             driver=accepted_request.driver,
-            distance=accepted_request.request.calculate_distance(),
+            #distance=accepted_request.request.calculate_distance(),
         )
         completed_trip.save()
         accepted_request.status = False
@@ -170,3 +170,25 @@ def complete_trip(request):
         return Response({'message': 'Trip completed successfully'})
     except Accepted_req.DoesNotExist:
         return Response({'error': 'Accepted request not found'}, status=404)
+
+@api_view(['GET'])
+@login_required
+def my_trips(request):
+    user = request.user
+
+    # Retrieve completed trips for the user
+    completed_trips = Completed_trip.objects.filter(request__user=user)
+
+    # Prepare the data to be returned
+    data = []
+    for trip in completed_trips:
+        trip_data = {
+            'driver': trip.driver.username,
+            'requestId': trip.request.request_id,
+            "patientName": trip.request.patient,
+            "hospitalLatitude": trip.request.hospitalLatitude,
+            "hospitalLongitude":trip.request.hospitalLongitude
+        }
+        data.append(trip_data)
+
+    return JsonResponse(data, safe=False)

@@ -20,11 +20,13 @@ urlpatterns = [
 
     #user request endpoints
     path('api/request', views.user_request),
+    path('api/mytrips', views.my_trips, name='my_trips'),
+
 
     #driver requesr endpoints
     path('api/available_requests', views.available_requests),
     path('api/available_requests/<int:request_id>', views.request_detail),
-    path('api/accepted_requests', views.accepted_requests),
+    path('api/accept_request', views.accepted_requests),
     path('api/complete_trip', views.complete_trip),
 
     #password reset urls

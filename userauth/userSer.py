@@ -23,8 +23,8 @@ class mobiUser(serializers.ModelSerializer):
 class RequestSerializer(serializers.ModelSerializer):
     class Meta:
         model = Request
-        fields = ('request_id', 'patient', 'pick_latitude', 'pick_longitude',
-                  'contact', 'hospital_latitude', 'hospital_longitude')
+        fields = ('request_id', 'patient', 'pickLatitude', 'pickLongitude',
+                  'contact', 'hospitalLatitude', 'hospitalLongitude')
 
     def create(self, validated_data):
         request = Request.objects.create(**validated_data)
