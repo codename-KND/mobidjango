@@ -1,10 +1,10 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
-from django.http import JsonResponse
+from django.http import JsonResponse,HttpResponse
 from knox.models import AuthToken
 from rest_framework.authtoken.serializers import AuthTokenSerializer
-from .userSer import mobiUser,RequestSerializer, AcceptedRequestSerializer
+from .userSer import mobiUser,RequestSerializer, AcceptedRequestSerializer,MpesaSerializer
 from django.contrib.auth.models import Group
 from rest_framework.exceptions import NotFound
 from django.contrib.auth.decorators import login_required
@@ -12,6 +12,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
 from pygeodesic import geodesic
 from .models import User, Request, Accepted_req, Completed_trip
+from django_daraja.mpesa.core import MpesaClient
+from django.shortcuts import get_object_or_404
 
 ##Create youur views here.
 @api_view(['POST'])
@@ -153,9 +155,13 @@ def accepted_requests(request):
         return Response({'error': 'Driver not found'}, status=404)
 
 @api_view(['POST'])
-@login_required
+#@login_required
 def complete_trip(request):
     accepted_request_id = request.data.get('pending_id')
+
+    accepted_request = get_object_or_404(Accepted_req, pending_id=accepted_request_id)
+    request_instance = accepted_request.request
+    contact = request_instance.contact
 
     try:
         accepted_request = Accepted_req.objects.get(pk=accepted_request_id)
@@ -166,6 +172,14 @@ def complete_trip(request):
         )
         completed_trip.save()
         accepted_request.status = False
+        client = MpesaClient()
+        phone_number = contact
+        amount=1
+        account_refrence=' MOBILANCE'
+        transaction_desc = 'TRIP PAYMENT'
+        callback_url = 'http://api.darajambili.com/express-payment'
+        client.stk_push(phone_number,amount,account_refrence,transaction_desc,callback_url)
+    
         accepted_request.save()
         return Response({'message': 'Trip completed successfully'})
     except Accepted_req.DoesNotExist:
@@ -184,6 +198,49 @@ def my_trips(request):
     for trip in completed_trips:
         trip_data = {
             'driver': trip.driver.username,
+            'requestId': trip.request.request_id,
+            "patientName": trip.request.patient,
+            "hospitalLatitude": trip.request.hospitalLatitude,
+            "hospitalLongitude":trip.request.hospitalLongitude
+        }
+        data.append(trip_data)
+
+    return JsonResponse(data, safe=False)
+
+@api_view(['POST'])
+@login_required
+def payment(request):
+
+    pending_id = request.data.get('pending_id')
+    accepted_request = get_object_or_404(Accepted_req, pending_id=pending_id)
+    request_instance = accepted_request.request
+    contact = request_instance.contact
+
+    client = MpesaClient()
+    phone_number = contact
+    amount=1
+    account_refrence=' MOBILANCE'
+    transaction_desc = 'TRIP PAYMENT'
+    callback_url = 'http://api.darajambili.com/express-payment'
+
+    server_response = client.stk_push(phone_number,amount,account_refrence,transaction_desc,callback_url)
+    #response = MpesaSerializer(server_response)
+    
+    return HttpResponse(server_response)
+
+@api_view(['GET'])
+@login_required
+def drivertrips(request):
+    user = request.user
+
+    # Retrieve completed trips for the user
+    completed_trips = Completed_trip.objects.filter(driver_id=user)
+
+    # Prepare the data to be returned
+    data = []
+    for trip in completed_trips:
+        trip_data = {
+            
             'requestId': trip.request.request_id,
             "patientName": trip.request.patient,
             "hospitalLatitude": trip.request.hospitalLatitude,

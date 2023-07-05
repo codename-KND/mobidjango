@@ -42,3 +42,10 @@ class CompletedTripSerializer(serializers.ModelSerializer):
     class Meta:
         model = Completed_trip
         fields = '__all__'
+
+class MpesaSerializer(serializers.Serializer):
+    MerchantRequestID = serializers.CharField()
+    CheckoutRequestID = serializers.CharField()
+    ResponseCode = serializers.CharField()
+    ResponseDescription = serializers.CharField()
+    CustomerMessage = serializers.CharField()
