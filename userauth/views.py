@@ -207,8 +207,8 @@ def my_trips(request):
 
     return JsonResponse(data, safe=False)
 
-@api_view(['POST'])
-@login_required
+@api_view(['POST']) 
+
 def payment(request):
 
     pending_id = request.data.get('pending_id')
@@ -217,16 +217,24 @@ def payment(request):
     contact = request_instance.contact
 
     client = MpesaClient()
-    phone_number = contact
+    phone_number = '0712501695'
     amount=1
     account_refrence=' MOBILANCE'
     transaction_desc = 'TRIP PAYMENT'
-    callback_url = 'http://api.darajambili.com/express-payment'
+    # callback_url = ' http://127.0.0.1:4040'
+    callback_url = 'https://c20a-41-90-69-56.ngrok-free.app/api/payment-result'
 
     server_response = client.stk_push(phone_number,amount,account_refrence,transaction_desc,callback_url)
     #response = MpesaSerializer(server_response)
     
     return HttpResponse(server_response)
+
+@csrf_exempt
+def payment_results(self, request):
+    cl = MpesaClient()
+    if request.method == 'POST':
+        result = cl.parse_stk_result(request.body)
+        print(result)
 
 @api_view(['GET'])
 @login_required

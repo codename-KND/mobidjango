@@ -37,7 +37,8 @@ urlpatterns = [
     path('api/reset/done', csrf_exempt(auth_views.PasswordResetCompleteView.as_view(template_name='accounts/password_reset_complete.html')), name='password_reset_complete'),
 
 #daraja API
-    path('api/payment',views.payment)
+    path('api/payment',views.payment),
+    path('api/payment-result',views.payment_results)
 
 
 ]
