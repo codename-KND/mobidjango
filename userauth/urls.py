@@ -1,4 +1,4 @@
-from .import views
+from .import views, dashViews
 from django.urls import path
 from django.urls import include
 from knox import views as knox_views
@@ -11,7 +11,7 @@ urlpatterns = [
 
     #user auth
     path('api/authenticate', login_api, name='login'),
-    path('logout', knox_views.LogoutView.as_view()),
+    path('logout', knox_views.LogoutView.as_view(), name='logout'),
      path('logoutall',knox_views.LogoutAllView.as_view()),
    
    #user registration
@@ -38,7 +38,15 @@ urlpatterns = [
 
 #daraja API
     path('api/payment',views.payment),
-    path('api/payment-result',views.payment_results)
+    path('api/payment-result',views.payment_results),
+    
 
+    #admin Dashboard
+    path('', dashViews.index, name='index'),
+    path('drivers/', dashViews.drivers_list, name='drivers_list'),
+    path('customers/', dashViews.customer_list, name='customer_list'),
+    path('requests/', dashViews.request_list, name='request_list'),
+    path('trips/', dashViews.trips_list, name='trips_list'),
+    path('completed/', dashViews.completed_trip,name='completed_list'),
 
 ]

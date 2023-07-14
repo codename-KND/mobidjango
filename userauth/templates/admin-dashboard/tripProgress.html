@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<h1 class="section--title"> Trips in Progress</h1>
+    <div class="table">
+        <table>
+            <thead>
+                <tr>
+                    <th>Patient Name</th>
+                
+                    <th>Driver Name</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+    
+                {% for trip in info.currentTrip %}
+                <tr>
+                    <td>{{ trip.patient }}</td>
+                    <td>{{ trip.driver }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

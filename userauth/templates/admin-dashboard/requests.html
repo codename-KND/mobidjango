@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1 class="section--title"> Pending Request List</h1>
+    <div class="table">
+        <table>
+            <thead>
+                <tr>
+                    <th>Patient Name</th>
+                    <th> Made by</th>
+                    <th> Contact info</th>
+                    <th>Request Time</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+    
+                {% for request_dict in info.requests %}
+                <tr>
+                    <td>{{ request_dict.request.patient }}</td>
+                    <td>{{ request_dict.user }}</td>
+                    <td>{{ request_dict.request.contact }}</td>
+                    <td>{{ request_dict.time }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}

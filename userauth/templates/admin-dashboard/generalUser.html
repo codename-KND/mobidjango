@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1 class="section--title">Customer List</h1>
+<div class="table">
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email Address</th>
+            <th>Joined</th>
+            <th>Status</th>
+            
+        </tr>
+    </thead>
+    {% for customer in info.customer %}
+    <tbody>
+        <tr>
+            <td>{{ customer.username }}</td>
+            <td>{{ customer.email }}</td>
+            <td> {{ customer.date_joined }}</td>
+            <td>{% if customer.is_active %}Active{% else %}Not Active{% endif %}</td>
+        </tr>
+    </tbody>
+    {% endfor %}
+</table>
+</div>
+</div>  
+
+    
+
+{% endblock %}

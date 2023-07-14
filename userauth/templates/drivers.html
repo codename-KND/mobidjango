@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1 class="section--title">Drivers List</h1>
+    <div class="table">
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email Address</th>
+                    <th>Joined</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Iterate over drivers list -->
+                {% for driver in info.drivers %}
+                    <tr>
+                        <td>{{ driver.username }}</td>
+                        <td>{{ driver.email }}</td>
+                        <td>{{ driver.date_joined }}</td>
+                        <td>{% if driver.is_active %}Active{% else %}Inactive{% endif %}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

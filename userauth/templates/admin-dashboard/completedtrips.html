@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<form id="filter-form"  method="get" action="{% url 'completed_list' %}">
+    <select name="date" id="date" class="dropdown">
+        <option value="alltime">All Time</option>
+        <option value="today">Today</option>
+        <option value="lastweek">Last Week</option>
+        <option value="lastmonth">Last Month</option>
+        <option value="lastyear">Last Year</option>
+    </select>
+    <button type="submit"> <i class="ri-search-2-line"></i></button>
+    
+</form>
+<h1>  </h1>
+<h1 class="section--title"> Completed Trips</h1>
+    <div class="table">
+        <table>
+            <thead>
+                <tr>
+                    <th>Patient Name</th>
+                    <th>Driver Name</th>
+                    <th> Request On</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+    
+                {% for trip in info.currentTrip %}
+                <tr>
+                    <td>{{ trip.patient }}</td>
+                    <td>{{ trip.driver }}</td>
+                    <td id = date>{{ trip.date }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
