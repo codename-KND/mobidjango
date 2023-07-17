@@ -48,5 +48,6 @@ urlpatterns = [
     path('requests/', dashViews.request_list, name='request_list'),
     path('trips/', dashViews.trips_list, name='trips_list'),
     path('completed/', dashViews.completed_trip,name='completed_list'),
+     path('generate-report/', dashViews.generate_report, name='generate_report'),
 
 ]
