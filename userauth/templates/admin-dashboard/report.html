@@ -1,8 +1,27 @@
-{% extends 'base.html' %}
-
 {% block content %}
-<h1> Print Report</h1>
-<iframe src="{{ pdf_string }}" width="1000" height="700"></iframe>
-
-
+<h1> Trips Report</h1>
+<div class="table">
+    <table>
+        <thead>
+            <tr>
+                <th>Patient Name</th>
+                <th>User Name</th>
+                <th>Contact</th>
+                <th>Driver Name</th>
+                <th>Request On</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for index in data_dict %}
+            <tr>
+                <td>{{ data_dict[index].patient_name }}</td>
+                <td>{{ data_dict[index].user }}</td>
+                <td>{{ data_dict[index].contact }}</td>
+                <td>{{ data_dict[index].driver }}</td>
+                <td>{{ data_dict[index].request_date|date:"Y-m-d H:i:s" }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock %}
