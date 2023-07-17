@@ -12,13 +12,13 @@
             </tr>
         </thead>
         <tbody>
-            {% for index in data_dict %}
+            {% for index, trip in data_dict.items %}
             <tr>
-                <td>{{ data_dict[index].patient_name }}</td>
-                <td>{{ data_dict[index].user }}</td>
-                <td>{{ data_dict[index].contact }}</td>
-                <td>{{ data_dict[index].driver }}</td>
-                <td>{{ data_dict[index].request_date|date:"Y-m-d H:i:s" }}</td>
+                <td>{{ trip.patient_name }}</td>
+                <td>{{ trip.user }}</td>
+                <td>{{ trip.contact }}</td>
+                <td>{{ trip.driver }}</td>
+                <td>{{ trip.request_date|date:"Y-m-d H:i:s" }}</td>
             </tr>
             {% endfor %}
         </tbody>

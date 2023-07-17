@@ -187,48 +187,81 @@ def completed_trip(request):
 
 
 
-def render_to_pdf(template_src, context_dict ={}):
+# def render_to_pdf(template_src, context_dict ={}):
+#     template = get_template(template_src)
+#     html = template.render(context_dict)
+#     result = BytesIO()
+#     pdf = pisa.pisaDocument(BytesIO(html.encode("ISO-8859-1")),result)
+#     if not pdf.err:
+#         return HttpResponse(result.getvalue(), content_type="application/pdf")
+#     return None
+
+
+# completed_trips = Completed_trip.objects.select_related('request', 'driver')
+
+# data = [
+#         {
+#             'patient_name': trip.request.patient,
+#             'user': trip.request.user.username,
+#             'contact': trip.request.contact,
+#             'request_date': trip.request.request_time,
+#             'driver': trip.driver.username,
+#         }
+#         for trip in completed_trips
+# ]
+
+
+
+# data_dict = {
+#         index: {
+#         'patient_name': trip['patient_name'],
+#         'user': trip['user'],
+#         'contact': trip['contact'],
+#         'request_date': trip['request_date'],
+#         'driver': trip['driver']
+#     }
+#     for index, trip in enumerate(data)
+# }
+# print(data_dict)
+
+
+# class ViewPDF(View):
+#     def get(self,request,*args,**kwargs):
+#         print(data_dict)
+#         pdf =render_to_pdf('admin-dashboard/report.html',data_dict)
+#         return HttpResponse(pdf,content_type='application/pdf')
+
+def render_to_pdf(template_src, context_dict={}):
     template = get_template(template_src)
     html = template.render(context_dict)
     result = BytesIO()
-    pdf = pisa.pisaDocument(BytesIO(html.encode("ISO-8859-1")),result)
+    pdf = pisa.pisaDocument(BytesIO(html.encode("ISO-8859-1")), result)
     if not pdf.err:
         return HttpResponse(result.getvalue(), content_type="application/pdf")
     return None
-
-
-completed_trips = Completed_trip.objects.select_related('request', 'driver')
-
-data = [
-        {
-            'patient_name': trip.request.patient,
-            'user': trip.request.user.username,
-            'contact': trip.request.contact,
-            'request_date': trip.request.request_time,
-            'driver': trip.driver.username,
-        }
-        for trip in completed_trips
-]
-
-
-
-data_dict = {
-        index: {
-        'patient_name': trip['patient_name'],
-        'user': trip['user'],
-        'contact': trip['contact'],
-        'request_date': trip['request_date'],
-        'driver': trip['driver']
-    }
-    for index, trip in enumerate(data)
-}
-print(data_dict)
-
-
 class ViewPDF(View):
     def get(self,request,*args,**kwargs):
-        print(data_dict)
-        pdf =render_to_pdf('admin-dashboard/report.html',data_dict)
-        return HttpResponse(pdf,content_type='application/pdf')
-
-
+        completed_trips = Completed_trip.objects.select_related('request', 'driver')
+        data = [
+            {
+                'patient_name': trip.request.patient,
+                'user': trip.request.user.username,
+                'contact': trip.request.contact,
+                'request_date': trip.request.request_time,
+                'driver': trip.driver.username,
+            }
+            for trip in completed_trips
+        ]
+        data_dict = {
+            index: {
+                'patient_name': trip['patient_name'],
+                'user': trip['user'],
+                'contact': trip['contact'],
+                'request_date': trip['request_date'],
+                'driver': trip['driver']
+            }
+            for index, trip in enumerate(data)
+        }
+        context = {'data_dict': data_dict}
+        pdf = render_to_pdf('admin-dashboard/report.html', context)
+        return HttpResponse(pdf, content_type='application/pdf')
