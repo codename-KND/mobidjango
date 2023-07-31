@@ -4,7 +4,6 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .models import Request, Accepted_req, Completed_trip
 from .Dashinfo import DashinfoClass
-from .userSer import RequestSerializer
 from datetime import datetime, timedelta
 from .report_generator import Report
 from django.http import HttpResponse
@@ -134,102 +133,6 @@ def completed_trip(request):
 
 #report printing
 
-# def generate_report(request):
-#     # Retrieve completed trips and related data
-#     completed_trips = Completed_trip.objects.select_related('request', 'driver')
-#     data = [
-#         {
-#             'patient_name': trip.request.patient,
-#             'user': trip.request.user.username,
-#             'contact': trip.request.contact,
-#             'request_date': trip.request.request_time,
-#             'driver': trip.driver.username,
-#         }
-#         for trip in completed_trips
-#     ]
-
-#     # Create a PDF report using the Report class
-#     pdf_gen = Report(
-#         data=data,
-#         columns=['patient_name', 'user', 'contact', 'request_date', 'driver'],
-#         display_names=['Patient Name', 'User', 'Contact', 'Request Date', 'Driver'],
-#         title='Completed Trips Report',
-#         address='Your Company Address\nCity',
-#         logo_directory='C:\Users\L3NY\Desktop\Projects\mobilanceApp\mobidjango\userauth\static\assets\images\profile.jpeg'
-#     )
-#     pdf_string = pdf_gen.pdf_generator()
-
-#     return render(request, 'admin-dashboard/report.html', context={'pdf_string': pdf_string})
-
-# def generate_report(request):
-#     # instance of the Report class
-#     pdf_gen = Report()
-#     pdf_gen.columns = ['request__patient', 'request__user__username', 'request__contact', 'request__request_time', 'driver__username']
-#     pdf_gen.display_names = ['Patient Name', 'User', 'Contact', 'Request Date', 'Driver']
-#     pdf_gen.data = Completed_trip.objects.select_related('request', 'driver').values(
-#         *pdf_gen.columns
-#     )
-#     pdf_gen.title = "Completed Trips Report"
-#     pdf_gen.logo_location = '/path/to/logo.png'
-#     pdf_gen.address = 'Your Company\nCity'
-
-#     # Generate the PDF report
-#     pdf_string = pdf_gen.pdf_generator()
-
-#     # Create a response with the PDF content
-#     response = HttpResponse(content_type='application/pdf')
-#     response['Content-Disposition'] = 'attachment; filename="report.pdf"'
-
-#     # Write the PDF string content to the response
-#     response.write(pdf_string)
-
-#     return response
-
-
-
-# def render_to_pdf(template_src, context_dict ={}):
-#     template = get_template(template_src)
-#     html = template.render(context_dict)
-#     result = BytesIO()
-#     pdf = pisa.pisaDocument(BytesIO(html.encode("ISO-8859-1")),result)
-#     if not pdf.err:
-#         return HttpResponse(result.getvalue(), content_type="application/pdf")
-#     return None
-
-
-# completed_trips = Completed_trip.objects.select_related('request', 'driver')
-
-# data = [
-#         {
-#             'patient_name': trip.request.patient,
-#             'user': trip.request.user.username,
-#             'contact': trip.request.contact,
-#             'request_date': trip.request.request_time,
-#             'driver': trip.driver.username,
-#         }
-#         for trip in completed_trips
-# ]
-
-
-
-# data_dict = {
-#         index: {
-#         'patient_name': trip['patient_name'],
-#         'user': trip['user'],
-#         'contact': trip['contact'],
-#         'request_date': trip['request_date'],
-#         'driver': trip['driver']
-#     }
-#     for index, trip in enumerate(data)
-# }
-# print(data_dict)
-
-
-# class ViewPDF(View):
-#     def get(self,request,*args,**kwargs):
-#         print(data_dict)
-#         pdf =render_to_pdf('admin-dashboard/report.html',data_dict)
-#         return HttpResponse(pdf,content_type='application/pdf')
 
 def render_to_pdf(template_src, context_dict={}):
     template = get_template(template_src)

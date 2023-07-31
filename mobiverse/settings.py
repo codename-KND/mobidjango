@@ -148,18 +148,14 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = '587'
 EMAIL_HOST_USER = 'arkoarrangements@gmail.com'
-EMAIL_HOST_PASSWORD = 'mfxarwyfywjskgio'
+
 EMAIL_USE_TLS = True  
 #DEFAULT_FROM_EMAIL = 'your_email@example.com'
 
 
 #MPESA 
 MPESA_ENVIRONMENT ="sandbox"
-MPESA_CONSUMER_KEY ="yBE1DKbvEic4bH98Hbln8A1wwqOqNrRL"
-MPESA_CONSUMER_SECRET= "OTBO3FLxbcrhYirx"
 
-MPESA_EXPRESS_SHORTCODE='174379'
-MPESA_PASSKEY ="bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919"
 
 
 WKHTMLTOPDF_CMD = 'C:\Program Files\wkhtmltopdf'
