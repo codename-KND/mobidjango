@@ -10,7 +10,6 @@ from rest_framework.exceptions import NotFound
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
-from pygeodesic import geodesic
 from .models import User, Request, Accepted_req, Completed_trip
 from django_daraja.mpesa.core import MpesaClient
 from django.shortcuts import get_object_or_404, render
@@ -257,9 +256,3 @@ def drivertrips(request):
         data.append(trip_data)
 
     return JsonResponse(data, safe=False)
-
-
-#dashboard Views
-
-# def index(request):
-#     return render(request, 'admin-dashboard/index.html')
