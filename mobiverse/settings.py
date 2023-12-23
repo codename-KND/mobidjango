@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+from Secrets import *
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -148,14 +149,15 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = '587'
 EMAIL_HOST_USER = 'arkoarrangements@gmail.com'
-
+EMAIL_HOST_PASSWORD = EMAIL_HOST_PASSWORD
 EMAIL_USE_TLS = True  
 #DEFAULT_FROM_EMAIL = 'your_email@example.com'
 
 
 #MPESA 
 MPESA_ENVIRONMENT ="sandbox"
+MPESA_CONSUMER_KEY = CONSUMER_KEY
+MPESA_CONSUMER_SECRET= MPESA_CONSUMER_SECRET
+MPESA_EXPRESS_SHORTCODE = MPESA_EXPRESS_SHORTCODE
+MPESA_PASSKEY = MPESA_PASSKEY
 
-
-
-WKHTMLTOPDF_CMD = 'C:\Program Files\wkhtmltopdf'

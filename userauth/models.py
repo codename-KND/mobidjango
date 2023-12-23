@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.hashers import make_password
-from pygeodesic import geodesic
+from geographiclib.geodesic import Geodesic
 from django.utils import timezone
 from django.contrib.auth.models import User
 
@@ -23,15 +23,6 @@ class Request(models.Model):
      
     def __str__(self):
          return f"Request #{self.request_id}"
-    
-    # def calculate_distance(self):
-    #     if self.pick_latitude is None or self.pick_longitude is None or \
-    #             self.hospital_latitude is None or self.hospital_longitude is None:
-    #         return None
-    #     pickup = (float(self.pick_latitude), float(self.pick_longitude))
-    #     dropoff = (float(self.hospital_latitude), float(self.hospital_longitude))
-    #     distance = geodesic(pickup, dropoff).kilometers
-    #     return distance
     
     
 
@@ -62,7 +53,7 @@ class Accepted_req(models.Model):
 
         pickup = (float(pickupLatitude), float(pickupLongitude))
         dropoff = (float(hospitalLatitude), float(hospitalLongitude))
-        distance = geodesic(pickup, dropoff).kilometers
+        distance = Geodesic(pickup, dropoff).kilometers
         return distance
 
 class Completed_trip(models.Model):
